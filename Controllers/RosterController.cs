@@ -12,6 +12,7 @@ namespace FootballRosterAPI.Controllers
     {
         private ILogger _logger;
         private IRosterService _service;
+        private List<Player> _players;
 
         public RosterController(ILogger<RosterController> logger, IRosterService service)
         {
@@ -22,7 +23,19 @@ namespace FootballRosterAPI.Controllers
         [HttpGet("/api/roster")]
         public ActionResult<List<Player>> GetPlayers()
         {
-            return _service.GetPlayers();
+            var players = _service.GetAllPlayers();
+            return players;
+        }
+
+        [HttpGet("/api/roster/{id}")]
+        public ActionResult<Player> GetPlayerById(int id)
+        {
+            var player = _service.GetPlayerById(id);
+            if (player == null)
+            {
+                return NotFound();
+            }
+            return player;
         }
 
         [HttpPost("/api/roster")]
@@ -33,17 +46,17 @@ namespace FootballRosterAPI.Controllers
         }
 
         [HttpPut("/api/roster/{id}")]
-        public ActionResult<Player> UpdatePlayer(string id, Player player)
+        public ActionResult<Player> UpdatePlayer(int id, Player player)
         {
             _service.UpdatePlayer(id, player);
             return player;
         }
 
         [HttpDelete("/api/roster/{id}")]
-        public ActionResult<string> DeletePlayer(string id)
+        public ActionResult<string> DeletePlayer(int id)
         {
             _service.DeletePlayer(id);
-            return id;
+            return id.ToString();
         }
     }
 }

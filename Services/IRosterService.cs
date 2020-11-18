@@ -8,12 +8,14 @@ namespace FootballRosterAPI.Controllers
 {
     public interface IRosterService
     {
-        public List<Player> GetPlayers();
+        public List<Player> GetAllPlayers();
 
-        public Player AddPlayer(Player rosterMember);
+        public Player GetPlayerById(int id);
 
-        public Player UpdatePlayer(string id, Player rosterMember);
+        public Player AddPlayer(Player player);
 
-        public string DeletePlayer(string id);
+        public Player UpdatePlayer(int id, Player player);
+
+        public string DeletePlayer(int id);
     }
 }

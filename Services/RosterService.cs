@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FootballRosterAPI.Services
 {
@@ -16,9 +18,15 @@ namespace FootballRosterAPI.Services
             _players = new List<Player>();
         }
 
-        public List<Player> GetPlayers()
+        [HttpGet]
+        public List<Player> GetAllPlayers()
         {
             return _players;
+        }
+
+        public Player GetPlayerById(int id)
+        {
+            return _players.FirstOrDefault(p => p.ID == id);
         }
 
         public Player AddPlayer(Player player)
@@ -27,29 +35,22 @@ namespace FootballRosterAPI.Services
             return player;
         }
 
-        public Player UpdatePlayer(string id, Player player)
+        public Player UpdatePlayer(int id, Player player)
         {
-            for (var index = _players.Count - 1; index >= 0; index--)
-            {
-                if (_players[index].ID == id)
-                {
-                    _players[index] = player;
-                }
-            }
-            return player;
+            var index = _players.IndexOf(player);
+            var playerToUpdate = _players.Where(p => p.ID == id).First();
+            _players[index] = playerToUpdate;
+
+            return playerToUpdate;
         }
 
-        public string DeletePlayer(string id)
+        public string DeletePlayer(int id)
         {
-            for (var index = _players.Count - 1; index >= 0; index--)
-            {
-                if (_players[index].ID == id)
-                {
-                    _players.RemoveAt(index);
-                }
-            }
+            var playerToDelete = _players.Where(p => p.ID == id).First();
+            var index = _players.IndexOf(playerToDelete);
+            _players.RemoveAt(index);
 
-            return id;
+            return id.ToString();
         }
     }
 }
