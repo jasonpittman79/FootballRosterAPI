@@ -12,7 +12,6 @@ namespace FootballRosterAPI.Controllers
     {
         private ILogger _logger;
         private IRosterService _service;
-        private List<Player> _players;
 
         public RosterController(ILogger<RosterController> logger, IRosterService service)
         {
